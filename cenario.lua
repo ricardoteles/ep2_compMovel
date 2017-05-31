@@ -1,44 +1,52 @@
 cenario = {}
 
 function cenario.load()
-	blocks = {}
+	-- paredes
+	objetos.superior = {}
+	objetos.superior.body = love.physics.newBody(world, 400, 30)
+	objetos.superior.shape = love.physics.newRectangleShape(775, 40)
+	objetos.superior.fixture = love.physics.newFixture(objetos.superior.body, objetos.superior.shape)
+
+	objetos.esquerda = {}
+	objetos.esquerda.body = love.physics.newBody(world, 8, 305)
+	objetos.esquerda.shape = love.physics.newRectangleShape(8, 590)
+	objetos.esquerda.fixture = love.physics.newFixture(objetos.esquerda.body, objetos.esquerda.shape)
+
+	objetos.direita = {}
+	objetos.direita.body = love.physics.newBody(world, 784, 305)
+	objetos.direita.shape = love.physics.newRectangleShape(8, 590)
+	objetos.direita.fixture = love.physics.newFixture(objetos.direita.body, objetos.direita.shape)
+
+	-- tijolos
+	tijolos = {}
 	for i=1,18 do
-		for j=1,5 do
-		    local block = {}
-		    block.width = 40
-		    block.height = 20
-		    block.x = (i-1) * (block.width + 2) + block.width/2
-		    block.y = (j-1) * (block.height + 2) + 100
-		    block.magenta = (5-j)*255/4
-		    block.yellow = (j-1)*255/4
-		    table.insert(blocks, block)
+		for j=1,7 do
+		    local tijolo = {}
+		    tijolo.width = 40
+		    tijolo.height = 20
+		    tijolo.x = (i-1) * (tijolo.width + 2) + tijolo.width/2
+		    tijolo.y = (j-1) * (tijolo.height + 2) + 100
+		    tijolo.magenta = (5-j)*255/4
+		    tijolo.yellow = (j-1)*255/4
+		    tijolo.body = love.physics.newBody(world, tijolo.x+20, tijolo.y, "static")
+        	tijolo.shape = love.physics.newRectangleShape(tijolo.width, tijolo.height)
+        	tijolo.fixture = love.physics.newFixture(tijolo.body, tijolo.shape)
+		    table.insert(tijolos, tijolo)
 		end
 	end
 end
 
 
 function cenario.draw()
-	desenhaParedes()
-	desenhaTijolos()
-	desenhaScore()
-end
-
-function desenhaScore()
-    love.graphics.setColor(255,255,0,255)
-    love.graphics.setNewFont(20)
-    love.graphics.print("Score: "..score, 600, 20)
-end
-
-function desenhaTijolos()
-	for i,v in ipairs(blocks) do
-	    love.graphics.setColor(0, v.magenta,v.yellow,255)
-	    love.graphics.rectangle("fill", v.x, v.y, v.width, v.height)
-	end
-end
-
-function desenhaParedes()
+	-- desenha as paredes
     love.graphics.setColor(125, 125,125,255)
-    love.graphics.rectangle("fill", 8, 8, 8, 600)			-- esquerda
-    love.graphics.rectangle("fill", 784, 8, 8, 600)			-- direita
-    love.graphics.rectangle("fill", 8, 8, 784, 40)			-- cima
+	love.graphics.polygon("fill", objetos.superior.body:getWorldPoints(objetos.superior.shape:getPoints()))
+	love.graphics.polygon("fill", objetos.esquerda.body:getWorldPoints(objetos.esquerda.shape:getPoints()))
+	love.graphics.polygon("fill", objetos.direita.body:getWorldPoints(objetos.direita.shape:getPoints()))
+
+	-- desenha os tijolos
+	for i,v in ipairs(tijolos) do
+    	love.graphics.setColor(0, v.magenta,v.yellow,255)
+        love.graphics.polygon("fill", v.body:getWorldPoints(v.shape:getPoints()))
+	end
 end

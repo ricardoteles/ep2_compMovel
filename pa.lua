@@ -1,31 +1,31 @@
 pa = {}
 
 function pa.load()
-	pa.width = 50
-	pa.height = 10
-	pa.x = 0.5 * love.graphics.getWidth()
-	pa.y = 0.9 * love.graphics.getHeight()
-	pa.speed = 300
+	objetos.pa = {}
+	objetos.pa.body = love.physics.newBody(world, 0.5 * love.graphics.getWidth(), 0.9 * love.graphics.getHeight())
+	objetos.pa.shape = love.physics.newRectangleShape(50, 10)
+	objetos.pa.fixture = love.physics.newFixture(objetos.pa.body, objetos.pa.shape)
+	objetos.pa.speed = 300
+
 end
 
 function pa.update(dt)
-
-	if love.keyboard.isDown("left") then
-		pa.x = pa.x - (pa.speed*dt)
+	-- movimentacao horizontal da pa
+    if love.keyboard.isDown("left") then
+	    objetos.pa.body:setPosition(objetos.pa.body:getX() - objetos.pa.speed*dt, objetos.pa.body:getY())
 	elseif love.keyboard.isDown("right") then
-		pa.x = pa.x + (pa.speed*dt)	
+		objetos.pa.body:setPosition(objetos.pa.body:getX() + objetos.pa.speed*dt, objetos.pa.body:getY())
 	end
 
-	-- Impede a saida da tela
-	if pa.x < 16 then
-		pa.x = 16
-	elseif pa.x > (love.graphics.getWidth() - pa.width - 16) then
-		pa.x = love.graphics.getWidth() - pa.width - 16
-	end
-
+	-- impede que a pa saia da tela
+	if objetos.pa.body:getX() < 37 then
+		objetos.pa.body:setPosition(37, objetos.pa.body:getY())
+	elseif objetos.pa.body:getX() > (love.graphics.getWidth() - 45) then
+  		objetos.pa.body:setPosition((love.graphics.getWidth() - 45), objetos.pa.body:getY())
+  	end
 end
 
 function pa.draw()
 	love.graphics.setColor(255, 0, 0)
-	love.graphics.rectangle("fill", pa.x, pa.y, pa.width, pa.height)
+  	love.graphics.polygon("fill", objetos.pa.body:getWorldPoints(objetos.pa.shape:getPoints()))
 end
