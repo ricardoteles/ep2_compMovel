@@ -1,30 +1,24 @@
 require("pa")
 require("cenario")
 require("bola")
-require("pontuacao")
-score = 0
+require("audio")
+
 
 world = love.physics.newWorld(0, 0, true)
 objetos = {}
+pause = false
 
 function love.load()
-	pause = false
     text       = ""
-	
-	-- som das colisoes
-	toc = love.audio.newSource("sounds/blop.wav", "static") 
 
-	-- som de fundo
-	sound = love.audio.newSource("sounds/demons.mp3")
-	love.audio.setVolume(0.1)
-	love.audio.play(sound)
-	
-	
 	-- love.graphics.setBackgroundColor(5,70,110)
 	world:setCallbacks(beginContact, endContact, preSolve, postSolve)
+		
+    audio.load()
     cenario.load()
     bola.load()
     pa.load()
+    menu.load()
 end
 
 function love.update(dt)
@@ -34,7 +28,7 @@ function love.update(dt)
 		bola.update(dt)
 		pa.update(dt)
 		removeTijolos()
-	end   
+	end
 end
 
 function love.keypressed(key, unicode)
@@ -44,8 +38,8 @@ function love.keypressed(key, unicode)
 	elseif key == "p" and pause == true then
 		pause = false
 		text = ""
-	elseif key == 'escape' then
-      love.event.push('quit')
+	elseif key == 'escape' then	
+		love.event.push('quit')
 	end
 end
 
@@ -67,15 +61,6 @@ function endContact(a, b, coll)
 	    a:setUserData("Bateu")
 		score = score + 10
 	end 
-end
-
-function removeTijolos()
-  for i,v in ipairs(tijolos) do
-    if v.fixture:getUserData() == "Bateu" then
-      v.body:destroy()
-      table.remove(tijolos,i)
-    end
-  end
 end
 
 -- function preSolve(a, b, coll)

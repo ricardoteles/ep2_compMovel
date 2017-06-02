@@ -54,3 +54,12 @@ function cenario.draw()
         love.graphics.polygon("fill", v.body:getWorldPoints(v.shape:getPoints()))
 	end
 end
+
+function removeTijolos()
+  for i,v in ipairs(tijolos) do
+    if v.fixture:getUserData() == "Bateu" then
+      v.body:destroy()
+      table.remove(tijolos,i)
+    end
+  end
+end

@@ -1,3 +1,6 @@
+require("pontuacao")
+require("menu")
+
 bola = {}
 
 function bola.load()
@@ -14,10 +17,9 @@ function bola.load()
 end
 
 function bola.update(dt)
-  -- impede que a bola saia da tela
+  -- detecta se a bola bateu na parte inferior
   if objetos.bola.body:getY() > 595 then
-	objetos.bola.body:setPosition(objetos.bola.body:getX(), 595)
-  	objetos.bola.body:setLinearVelocity(0,0)
+  	fimDeJogo()
   end
 
   -- reseta a posicao da bola
@@ -35,4 +37,9 @@ end
 function resetGame()
     objetos.bola.body:setPosition(0.5 * love.graphics.getWidth(), 0.7 * love.graphics.getHeight())
     objetos.bola.body:setLinearVelocity(speed*math.sin(math.pi/8), speed*math.abs(math.cos(math.pi/8)))
+end
+
+function fimDeJogo()
+ 	atualizaPontuacaoEmCache()
+	menu.draw()
 end
