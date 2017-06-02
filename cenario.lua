@@ -1,4 +1,5 @@
 cenario = {}
+tijolos = {}
 
 function cenario.load()
 	-- paredes
@@ -6,19 +7,21 @@ function cenario.load()
 	objetos.superior.body = love.physics.newBody(world, 400, 30)
 	objetos.superior.shape = love.physics.newRectangleShape(775, 40)
 	objetos.superior.fixture = love.physics.newFixture(objetos.superior.body, objetos.superior.shape)
+	objetos.superior.fixture:setUserData("Parede")
 
 	objetos.esquerda = {}
 	objetos.esquerda.body = love.physics.newBody(world, 8, 305)
 	objetos.esquerda.shape = love.physics.newRectangleShape(8, 590)
 	objetos.esquerda.fixture = love.physics.newFixture(objetos.esquerda.body, objetos.esquerda.shape)
+	objetos.esquerda.fixture:setUserData("Parede")
 
 	objetos.direita = {}
 	objetos.direita.body = love.physics.newBody(world, 784, 305)
 	objetos.direita.shape = love.physics.newRectangleShape(8, 590)
 	objetos.direita.fixture = love.physics.newFixture(objetos.direita.body, objetos.direita.shape)
+	objetos.direita.fixture:setUserData("Parede")
 
 	-- tijolos
-	tijolos = {}
 	for i=1,18 do
 		for j=1,7 do
 		    local tijolo = {}
@@ -31,6 +34,7 @@ function cenario.load()
 		    tijolo.body = love.physics.newBody(world, tijolo.x+20, tijolo.y, "static")
         	tijolo.shape = love.physics.newRectangleShape(tijolo.width, tijolo.height)
         	tijolo.fixture = love.physics.newFixture(tijolo.body, tijolo.shape)
+			tijolo.fixture:setUserData("Tijolo")
 		    table.insert(tijolos, tijolo)
 		end
 	end

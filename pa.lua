@@ -6,6 +6,7 @@ function pa.load()
 	objetos.pa.shape = love.physics.newRectangleShape(50, 10)
 	objetos.pa.fixture = love.physics.newFixture(objetos.pa.body, objetos.pa.shape)
 	objetos.pa.speed = 300
+	objetos.pa.fixture:setUserData("Pa")
 
 end
 

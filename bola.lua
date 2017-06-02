@@ -6,6 +6,7 @@ function bola.load()
 	objetos.bola.shape = love.physics.newCircleShape(5) 
 	objetos.bola.fixture = love.physics.newFixture(objetos.bola.body, objetos.bola.shape, 1)
 	objetos.bola.fixture:setRestitution(1)
+	objetos.bola.fixture:setUserData("Bola")
 
 	speed = 200
 	objetos.bola.body:setLinearVelocity( speed*math.sin(math.pi/8), speed*math.abs(math.cos(math.pi/8)) )
