@@ -6,7 +6,7 @@ require("audio")
 
 world = love.physics.newWorld(0, 0, true)
 objetos = {}
-pause = false
+pause = true
 
 function love.load()
     text       = ""
@@ -40,6 +40,9 @@ function love.keypressed(key, unicode)
 		text = ""
 	elseif key == 'escape' then	
 		love.event.push('quit')
+	-- reseta a posicao da bola
+  	elseif key == "r" then
+  		resetGame()
 	end
 end
 

@@ -5,14 +5,14 @@ bola = {}
 
 function bola.load()
 	objetos.bola = {}
-	objetos.bola.body = love.physics.newBody(world, 0.5 * love.graphics.getWidth(), 0.7 * love.graphics.getHeight(), "dynamic")
+	objetos.bola.body = love.physics.newBody(world, 0.5 * love.graphics.getWidth(), (0.9 * love.graphics.getHeight())-10, "dynamic")
 	objetos.bola.shape = love.physics.newCircleShape(5) 
 	objetos.bola.fixture = love.physics.newFixture(objetos.bola.body, objetos.bola.shape, 1)
 	objetos.bola.fixture:setRestitution(1)
 	objetos.bola.fixture:setUserData("Bola")
 
 	speed = 200
-	objetos.bola.body:setLinearVelocity( speed*math.sin(math.pi/8), speed*math.abs(math.cos(math.pi/8)) )
+	objetos.bola.body:setLinearVelocity( speed*math.sin(math.pi/8), (-1)*speed*math.abs(math.cos(math.pi/8)) )
 
 end
 
@@ -22,10 +22,7 @@ function bola.update(dt)
   	fimDeJogo()
   end
 
-  -- reseta a posicao da bola
-  if love.keyboard.isDown("r") then
-  	resetGame()
-  end
+  
 
   -- evita que a bola fique muito rapida
   velX, velY = objetos.bola.body:getLinearVelocity()
@@ -47,8 +44,8 @@ function bola.draw()
 end
 
 function resetGame()
-    objetos.bola.body:setPosition(0.5 * love.graphics.getWidth(), 0.7 * love.graphics.getHeight())
-    objetos.bola.body:setLinearVelocity(speed*math.sin(math.pi/8), speed*math.abs(math.cos(math.pi/8)))
+    objetos.bola.body:setPosition(0.5 * love.graphics.getWidth(), (0.9 * love.graphics.getHeight())-10)
+    objetos.bola.body:setLinearVelocity(speed*math.sin(math.pi/8), (-1)*speed*math.abs(math.cos(math.pi/8)))
 end
 
 function fimDeJogo()
