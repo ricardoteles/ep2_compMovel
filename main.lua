@@ -54,6 +54,17 @@ end
 
 function beginContact(a, b, coll)
 	toc:play()
+
+	local bBody = b:getBody()
+	local aBody = a:getBody()
+    local bVelX, bVelY = bBody:getLinearVelocity()
+
+    -- -- apenas para teste
+	-- x, y = bBody:getLinearVelocity()
+	-- print ("Velx "..b:getUserData().." : ".. x)
+	-- print ("Vely "..b:getUserData().." : ".. y.."\n")
+
+	bBody:applyAngularImpulse(10*math.random(-10,10))
 end
  
 function endContact(a, b, coll)
@@ -69,4 +80,4 @@ end
  
 -- function postSolve(a, b, coll, normalimpulse, tangentimpulse)
  
--- end
+-- endContact

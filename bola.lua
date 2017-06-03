@@ -26,7 +26,19 @@ function bola.update(dt)
   if love.keyboard.isDown("r") then
   	resetGame()
   end
-	
+
+  -- evita que a bola fique muito rapida
+  velX, velY = objetos.bola.body:getLinearVelocity()
+  
+  if velX > 200 then 
+	objetos.bola.body:setLinearVelocity( speed*math.sin(math.pi/8), velY)
+  end
+  if velY > 200 then
+	objetos.bola.body:setLinearVelocity( velX, speed*math.abs(math.cos(math.pi/8)) )
+  elseif velY > 0 and velY < 50 then
+	objetos.bola.body:setLinearVelocity( velX, speed*math.abs(math.cos(math.pi/8)) )
+  end 
+
 end
 
 function bola.draw()
