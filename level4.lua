@@ -1,7 +1,11 @@
-cenario = {}
+level4 = {}
 tijolos = {}
 
-function cenario.load()
+sentido = 'dir'
+
+function level4.load()
+	tijolosRestante = 75
+	
 	-- paredes
 	objetos.superior = {}
 	objetos.superior.body = love.physics.newBody(world, 400, 30)
@@ -24,24 +28,52 @@ function cenario.load()
 	-- tijolos
 	for i=1,18 do
 		for j=1,7 do
-		    local tijolo = {}
-		    tijolo.width = 40
-		    tijolo.height = 20
-		    tijolo.x = (i-1) * (tijolo.width + 2) + tijolo.width/2
-		    tijolo.y = (j-1) * (tijolo.height + 2) + 100
-		    tijolo.magenta = (5-j)*255/4
-		    tijolo.yellow = (j-1)*255/4
-		    tijolo.body = love.physics.newBody(world, tijolo.x+20, tijolo.y, "static")
-        	tijolo.shape = love.physics.newRectangleShape(tijolo.width, tijolo.height)
-        	tijolo.fixture = love.physics.newFixture(tijolo.body, tijolo.shape)
-			tijolo.fixture:setUserData("Tijolo")
-		    table.insert(tijolos, tijolo)
+			if (j % 2 == 1) or (j % 2 == 0 and i == 1)  then
+			    local tijolo = {}
+			    tijolo.width = 40
+			    tijolo.height = 20
+			    tijolo.x = (i-1) * (tijolo.width + 2) + tijolo.width/2
+			    tijolo.y = (j-1) * (tijolo.height + 2) + 100
+			    tijolo.magenta = (5-j)*255/4
+			    tijolo.yellow = (j-1)*255/4
+			    tijolo.body = love.physics.newBody(world, tijolo.x+20, tijolo.y, "static")
+	        	tijolo.shape = love.physics.newRectangleShape(tijolo.width, tijolo.height)
+	        	tijolo.fixture = love.physics.newFixture(tijolo.body, tijolo.shape)
+				tijolo.fixture:setUserData("Tijolo")
+				tijolo.speedX = 0
+
+				if (j % 2 == 0 and i == 1)  then
+					tijolo.speedX = 100
+				end
+
+			    table.insert(tijolos, tijolo)
+			end
+		end
+	end
+end
+
+function level4.update(dt)
+	for i,v in ipairs(tijolos) do
+		if v.speedX ~= 0 then 
+			if v.body:getX() >= 750 and sentido == 'dir' and v.speedX then
+			 	sentido = 'esq' 
+	 		elseif v.body:getX() <= 50 and sentido == 'esq' then
+				sentido = 'dir' 
+			end
+				 
+			-- print(sentido.. " ".. v.body:getX())
+
+			if sentido == 'dir' then
+				v.body:setPosition(v.body:getX() + v.speedX*dt, v.body:getY())
+			elseif sentido == 'esq' then
+				v.body:setPosition(v.body:getX() - v.speedX*dt, v.body:getY())
+			end
 		end
 	end
 end
 
 
-function cenario.draw()
+function level4.draw()
 	-- desenha as paredes
     love.graphics.setColor(125, 125,125,255)
 	love.graphics.polygon("fill", objetos.superior.body:getWorldPoints(objetos.superior.shape:getPoints()))
