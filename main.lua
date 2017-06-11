@@ -15,8 +15,9 @@ objetos = {}
 
 pause = true
 colisao = false
-levelAtual = 5
+levelAtual = 1
 tijolosRestante = 0
+tijolosQuebrados = 0
 
 colisaoX,colisaoY = 0, 0
 text       = ""
@@ -78,9 +79,10 @@ function love.draw()
 
     love.graphics.print(text, 300, 300) -- test
 
-    if colisao == true then
+    if colisao == true and (tijolosQuebrados % 15) == 0 then
 		animacao.draw(colisaoX, colisaoY)
-	
+		explosao:play()
+
 		if tempoExplosao < 0 then
 			colisao = false
 		end
@@ -118,14 +120,15 @@ function endContact(a, b, coll)
 		score = score + 10
 		colisao = true
 		tempoExplosao = 1
-		explosao:play()
+		-- explosao:play()
 		tijolosRestante = tijolosRestante - 1 
+		tijolosQuebrados = tijolosQuebrados + 1
 	end
 end
 
 function loadLevel()
 	if levelAtual == 0 then
-		level5.load()
+		level.load()
 		text = "Level 0!"
 	elseif levelAtual == 1 then 
 		level1.load()
