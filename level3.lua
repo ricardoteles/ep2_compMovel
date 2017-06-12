@@ -2,9 +2,9 @@ level3 = {}
 tijolos = {}
 
 function level3.load()
-	tijolosRestante = 126
+	tijolosRestante = 114
 	
-	-- paredes
+	-- Parede
 	objetos.superior = {}
 	objetos.superior.body = love.physics.newBody(world, 400, 30)
 	objetos.superior.shape = love.physics.newRectangleShape(775, 40)
@@ -32,19 +32,29 @@ function level3.load()
 		    tijolo.x = (i-1) * (tijolo.width + 2) + tijolo.width/2
 		    tijolo.y = (j-1) * (tijolo.height + 2) + 100
 		    tijolo.magenta = (5-j)*255/4
-		    tijolo.yellow = (j-1)*255/4
+		    tijolo.amarelo = (j-1)*255/4
+		    tijolo.ciano = 255
 		    tijolo.body = love.physics.newBody(world, tijolo.x+20, tijolo.y, "static")
         	tijolo.shape = love.physics.newRectangleShape(tijolo.width, tijolo.height)
         	tijolo.fixture = love.physics.newFixture(tijolo.body, tijolo.shape)
 			tijolo.fixture:setUserData("Tijolo")
+		    
+		    if j == 4 and ((i <= 4 or i >= 14) or (i >= 8 and i <= 10)) then
+		    	tijolo.magenta = 70
+		    	tijolo.amarelo = 70		
+		    	tijolo.ciano = 87
+				tijolo.fixture:setUserData("Parede")
+		    end 
+
 		    table.insert(tijolos, tijolo)
+
 		end
 	end
 end
 
 
 function level3.draw()
-	-- desenha as paredes
+	-- desenha as Parede
     love.graphics.setColor(125, 125,125,255)
 	love.graphics.polygon("fill", objetos.superior.body:getWorldPoints(objetos.superior.shape:getPoints()))
 	love.graphics.polygon("fill", objetos.esquerda.body:getWorldPoints(objetos.esquerda.shape:getPoints()))
@@ -52,7 +62,7 @@ function level3.draw()
 
 	-- desenha os tijolos
 	for i,v in ipairs(tijolos) do
-    	love.graphics.setColor(0, v.magenta,v.yellow,255)
+    	love.graphics.setColor(0, v.magenta,v.amarelo,v.ciano)
         love.graphics.polygon("fill", v.body:getWorldPoints(v.shape:getPoints()))
 	end
 end

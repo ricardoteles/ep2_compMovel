@@ -15,7 +15,8 @@ objetos = {}
 
 pause = true
 colisao = false
-levelAtual = 1
+fim = false
+levelAtual = 0
 tijolosRestante = 0
 tijolosQuebrados = 0
 
@@ -38,7 +39,7 @@ end
 
 function love.update(dt)
 
-	if pause == false then
+	if pause == false and fim == false then
 		world:update(dt)
 
 		bola.update(dt)
@@ -56,26 +57,28 @@ function love.update(dt)
 end
 
 function love.keypressed(key, unicode)
-	if key == "p" and pause == false then
+	if key == "p" and pause == false and fim == false then
 		pause = true
 		text = "O jogo está pausado"
-	elseif key == "p" and pause == true then
+	elseif key == "p" and pause == true and fim == false then
 		pause = false
 		text = ""
 	elseif key == 'escape' then	
 		love.event.push('quit')
 	
 	-- reseta a posicao da bola (teste)
-  	elseif key == "r" then
+  	elseif key == "r" and fim == false then
   		resetGame()
 	end
 end
 
 function love.draw()
-    drawLevel()
-    bola.draw()
-    pa.draw()
-    pontuacao.draw()
+	if fim == false then 
+	    drawLevel()
+	    bola.draw()
+	    pa.draw()
+    	pontuacao.draw()
+	end
 
     love.graphics.print(text, 300, 300) -- test
 
@@ -90,7 +93,6 @@ function love.draw()
 
     if tijolosRestante == 0 then
     	levelAtual = levelAtual + 1
-    	print (levelAtual)
     	inicioLevel()
     end
 
@@ -129,18 +131,19 @@ end
 function loadLevel()
 	if levelAtual == 0 then
 		level.load()
-		text = "Level 0!"
+		text = "\t\t\tLevel 0!\n"
+		text = text.."(Toque na tela para iniciar)"
 	elseif levelAtual == 1 then 
 		level1.load()
-		text = "Level 1!"
+		text = "\t\t\tLevel 1!"
 	elseif levelAtual == 2 then 
-		text = "Level 2!"
+		text = "\t\t\tLevel 2!"
 		level2.load()
 	elseif levelAtual == 3 then 
-		text = "Level 3!"
+		text = "\t\t\tLevel 3!"
 		level3.load()
 	elseif levelAtual == 4 then 
-		text = "Level 4!"
+		text = "\t\t\tLevel 4!"
 		level4.load()
 	elseif levelAtual == 5 then 
 		text = "Último Level!"
@@ -156,11 +159,11 @@ function drawLevel()
 	elseif levelAtual == 2 then 
 		level2.draw()
 	elseif levelAtual == 3 then 
-		level1.draw()
+		level3.draw()
 	elseif levelAtual == 4 then 
-		level2.draw()
+		level4.draw()
 	elseif levelAtual == 5 then 
-		level1.draw()
+		level5.draw()
 	end
 end
 

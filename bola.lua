@@ -49,6 +49,7 @@ function resetGame()
 end
 
 function fimDeJogo()
+	fim = true
  	atualizaPontuacaoEmCache()
 	menu.draw()
 end

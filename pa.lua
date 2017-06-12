@@ -7,7 +7,7 @@ function pa.load()
 	objetos.pa.fixture = love.physics.newFixture(objetos.pa.body, objetos.pa.shape)
 	objetos.pa.speed = 300
 	objetos.pa.fixture:setUserData("Pa")
-
+	objetos.pa.y = objetos.pa.body:getY()
 end
 
 function pa.update(dt)
@@ -17,6 +17,16 @@ function pa.update(dt)
 	elseif love.keyboard.isDown("right") then
 		objetos.pa.body:setPosition(objetos.pa.body:getX() + objetos.pa.speed*dt, objetos.pa.body:getY())
 	end
+
+	-- trata o movimento da pa via touch screen 	
+	-- local touches = love.touch.getTouches()  	
+
+	-- for i, id in ipairs(touches) do 		
+	-- 	local x, y = love.touch.getPosition(id) 		
+	-- 	if (y <= (objetos.pa.y + 20)) and (y >= (objetos.pa.y - 20)) then 			
+	-- 		objetos.pa.body:setPosition(x, objetos.pa.y) 		
+	-- 	end 	
+	-- end
 
 	-- impede que a pa saia da tela
 	if objetos.pa.body:getX() < 37 then
